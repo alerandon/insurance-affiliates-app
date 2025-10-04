@@ -1,6 +1,7 @@
 import { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { formattingPhoneNumber } from '../affiliates.helpers';
+import { GENDER_VALUES, GenderType } from '../types/genders.type';
 
 export type AffiliateDocument = HydratedDocument<Affiliate>;
 
@@ -21,11 +22,14 @@ export class Affiliate {
   @Prop({ unique: true, required: true })
   dni: string;
 
+  @Prop({ required: true, enum: GENDER_VALUES })
+  genre: GenderType;
+
   @Prop()
   age: number;
 
   @Prop()
-  annualFee: number;
+  usdAnnualFee: number;
 
   @Prop({ required: true })
   bornDate: Date;
@@ -38,3 +42,4 @@ AffiliateSchema.virtual('fullName').get(function () {
 });
 
 AffiliateSchema.set('toJSON', { virtuals: true });
+AffiliateSchema.set('toObject', { virtuals: true });

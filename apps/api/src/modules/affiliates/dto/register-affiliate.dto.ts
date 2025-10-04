@@ -1,1 +1,55 @@
-export class RegisterAffiliateDto {}
+import { IsDate, IsIn, IsPhoneNumber, IsString } from 'class-validator';
+import { GENDER_VALUES, GenderType } from '../types/genders.type';
+import { ApiProperty } from '@nestjs/swagger';
+
+export class RegisterAffiliateDto {
+  @ApiProperty({
+    description: 'First name of the affiliate',
+    example: 'Francisco',
+    required: true,
+  })
+  @IsString()
+  firstName: string;
+
+  @ApiProperty({
+    description: 'Last name of the affiliate',
+    example: 'Lopez',
+    required: true,
+  })
+  @IsString()
+  lastName: string;
+
+  @ApiProperty({
+    description:
+      'Phone number of the affiliate, it always must start with "+58" country code',
+    example: '+580000000000',
+    required: true,
+  })
+  @IsString()
+  @IsPhoneNumber('VE')
+  phoneNumber: string;
+
+  @ApiProperty({
+    description: 'DNI of the affiliate, it must be unique',
+    example: '12345678',
+    required: true,
+  })
+  @IsString()
+  dni: string;
+
+  @ApiProperty({
+    description: 'Gender of the affiliate',
+    example: 'M',
+    required: true,
+  })
+  @IsIn(GENDER_VALUES)
+  gender: GenderType;
+
+  @ApiProperty({
+    description: 'Born date of the affiliate',
+    example: '1990-01-01',
+    required: true,
+  })
+  @IsDate()
+  bornDate: Date;
+}
