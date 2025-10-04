@@ -4,7 +4,7 @@ import { formattingPhoneNumber } from '../affiliates.helpers';
 
 export type AffiliateDocument = HydratedDocument<Affiliate>;
 
-@Schema()
+@Schema({ timestamps: true })
 export class Affiliate {
   @Prop({ required: true })
   firstName: string;
@@ -32,3 +32,9 @@ export class Affiliate {
 }
 
 export const AffiliateSchema = SchemaFactory.createForClass(Affiliate);
+
+AffiliateSchema.virtual('fullName').get(function () {
+  return `${this.firstName} ${this.lastName}`;
+});
+
+AffiliateSchema.set('toJSON', { virtuals: true });
