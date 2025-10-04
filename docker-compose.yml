@@ -55,13 +55,13 @@ services:
     image: mongo:latest
     restart: always
     environment:
-      MONGO_INITDB_ROOT_USERNAME: user
-      MONGO_INITDB_ROOT_PASSWORD: password
-      MONGO_INITDB_DATABASE: insurance-affiliates-app
+      MONGO_INITDB_ROOT_USERNAME: ${API_DB_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${API_DB_PASSWORD}
+      MONGO_INITDB_DATABASE: ${API_DB_NAME}
     ports:
-      - 27017:27017
+      - ${API_DB_PORT}:${API_DB_PORT}
     volumes:
-      - mongodb_data:/data/mongodb
+      - mongodb_data:/data/db
     networks:
       - insurance_affiliates_network
     healthcheck:
