@@ -1,0 +1,79 @@
+services:
+  web:
+    container_name: web
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 5173:5173
+    networks:
+      - insurance_affiliates_network
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/web/src
+          target: /app/web/src
+          ignore:
+            - node_modules/
+            - build/
+        - action: rebuild
+          path: ./apps/web/package.json
+  api:
+    container_name: api
+    environment:
+      API_PORT: ${API_PORT}
+      API_DB_USER: ${API_DB_USER}
+      API_DB_PASSWORD: ${API_DB_PASSWORD}
+      API_DB_HOST: ${API_DB_HOST}
+      API_DB_PORT: ${API_DB_PORT}
+      API_DB_NAME: ${API_DB_NAME}
+      API_NODE_ENV: ${API_NODE_ENV}
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - ${API_PORT}:${API_PORT}
+    networks:
+      - insurance_affiliates_network
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    develop:
+      watch:
+        - action: sync
+          path: ./apps/api/src
+          target: /app/api/src
+          ignore:
+            - node_modules/
+            - build/
+        - action: rebuild
+          path: ./apps/api/package.json
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+      MONGO_INITDB_DATABASE: insurance-affiliates-app
+    ports:
+      - 27017:27017
+    volumes:
+      - mongodb_data:/data/mongodb
+    networks:
+      - insurance_affiliates_network
+    healthcheck:
+      test: ['CMD', 'mongosh', '--eval', 'db.runCommand({ ping: 1 })']
+      interval: 10s
+      timeout: 10s
+      retries: 5
+      start_period: 40s
+
+networks:
+  insurance_affiliates_network:
+    driver: bridge
+
+volumes:
+  mongodb_data:
