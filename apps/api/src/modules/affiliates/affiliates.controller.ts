@@ -4,6 +4,7 @@ import { RegisterAffiliateDto } from './dto/register-affiliate.dto';
 import { ApiBody, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { FindAllDocs } from './docs/find-all';
 import { RegisterDocs } from './docs/register';
+import { checkIfDniHasConflict } from './affiliates.helpers';
 
 @ApiTags('Affiliates')
 @Controller('affiliates')
@@ -31,9 +32,14 @@ export class AffiliatesController {
   @ApiResponse(RegisterDocs.apiResponseStatus201)
   @ApiResponse(RegisterDocs.apiResponseStatus400)
   async create(@Body() registerAffiliateDto: RegisterAffiliateDto) {
-    const createdAffiliate =
-      await this.affiliatesService.create(registerAffiliateDto);
-    const response = { data: createdAffiliate };
-    return response;
+    try {
+      const createdAffiliate =
+        await this.affiliatesService.create(registerAffiliateDto);
+      const response = { data: createdAffiliate };
+      return response;
+    } catch (error) {
+      checkIfDniHasConflict(error);
+      throw error;
+    }
   }
 }

@@ -1,3 +1,4 @@
+import { ConflictException } from '@nestjs/common';
 import * as dayjs from 'dayjs';
 
 export const findQueryProjection = {
@@ -23,4 +24,15 @@ export function calculateUsdAnnualFee(age: number): number {
   if (age >= 71 && age <= 90) return 25;
 
   return 30;
+}
+
+export function checkIfDniHasConflict(err: any) {
+  if (err && err.code === 11000) {
+    const duplicatedField = err.keyValue
+      ? Object.keys(err.keyValue)[0]
+      : 'field';
+    if (duplicatedField === 'dni') {
+      throw new ConflictException('DNI already exists');
+    }
+  }
 }
