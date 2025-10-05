@@ -34,11 +34,16 @@ export class AffiliatesService {
       countQuery,
     ]);
 
+    const hasPrev = pageNumber > 1;
+    const hasNext = skipNumber + affiliates.length < totalItems;
+
     const response = {
       items: affiliates,
       page: pageNumber,
       limit: pageLimit,
-      total: totalItems,
+      totalItems: totalItems,
+      hasPrev,
+      hasNext,
     };
     return response;
   }
