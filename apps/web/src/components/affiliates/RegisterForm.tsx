@@ -1,10 +1,20 @@
 "use client"
 
 import { z } from "zod"
+import { format } from "date-fns"
 import { useForm } from "react-hook-form"
+import { CalendarIcon } from "lucide-react"
+import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
 import {
   Form,
   FormControl,
@@ -14,10 +24,25 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { Calendar } from "../ui/calendar"
 
 const formSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
+  firstName: z.string().min(1, {
+    message: "First name is required.",
+  }),
+  lastName: z.string().min(1, {
+    message: "Last name is required.",
+  }),
+  phoneNumber: z.string().min(1, {
+    message: "Phone number is required.",
+  }),
+  dni: z.string().min(1, {
+    message: "DNI is required.",
+  }),
+  gender: z.enum(["M", "F"]),
+  birthDate: z.date().min(new Date(0), {
+    message: "Birth date is required.",
   }),
 })
 
@@ -26,7 +51,12 @@ function RegisterForm() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      dni: "",
+      gender: "M",
+      birthDate: new Date(),
     },
   })
 
@@ -46,10 +76,10 @@ function RegisterForm() {
         <div className="grid grid-cols-3 gap-6">
           <FormField
             control={form.control}
-            name="username"
+            name="firstName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input placeholder="shadcn" {...field} />
                 </FormControl>
@@ -59,12 +89,12 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="lastName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Last Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="Lopez" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -72,12 +102,12 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="phoneNumber"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Phone Number</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="+584120000000" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,12 +115,12 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="dni"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>DNI</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Input placeholder="12345678" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -98,30 +128,66 @@ function RegisterForm() {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="gender"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel>Gender</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" {...field} />
+                  <Select {...field}>
+                    <SelectTrigger className="!w-full">
+                      <SelectValue placeholder="Select gender" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="M">Male</SelectItem>
+                      <SelectItem value="F">Female</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
           <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="shadcn" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          control={form.control}
+          name="birthDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Date of birth</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date("1900-01-01")
+                    }
+                    captionLayout="dropdown"
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         </div>
         <div className="flex justify-end">
           <Button type="submit">Submit</Button>
