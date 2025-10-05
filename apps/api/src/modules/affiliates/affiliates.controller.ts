@@ -26,7 +26,7 @@ export class AffiliatesController {
     return response;
   }
 
-  @Post('register')
+  @Post()
   @ApiBody(RegisterDocs.apiBody)
   @ApiOperation(RegisterDocs.apiOperation)
   @ApiResponse(RegisterDocs.apiResponseStatus201)

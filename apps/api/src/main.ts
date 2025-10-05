@@ -14,12 +14,9 @@ async function bootstrap() {
     .setDescription(
       'This is the documentation for the Insurance Affiliates API endpoint routes.',
     )
-    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api/docs', app, document, {
-    swaggerOptions: { persistAuthorization: true },
-  });
+  SwaggerModule.setup('api/docs', app, document);
 
   await app.listen(process.env.API_PORT ?? 3000);
 }
