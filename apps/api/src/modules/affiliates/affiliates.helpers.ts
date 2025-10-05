@@ -1,17 +1,15 @@
-import parsePhoneNumber from 'libphonenumber-js';
-import dayjs from 'dayjs';
+import * as dayjs from 'dayjs';
 
-export function formattingPhoneNumber(phone: string): string {
-  try {
-    const phoneNumber = parsePhoneNumber(phone || '');
-    const formattedPhone = phoneNumber?.formatInternational() || '';
-    return formattedPhone;
-  } catch {
-    return '';
-  }
-}
+export const findQueryProjection = {
+  firstName: 1,
+  lastName: 1,
+  fullName: 1,
+  dni: 1,
+  age: 1,
+  usdAnnualFee: 1,
+};
 
-export function ageFromBornDate(bornDate: Date | string): number {
+export function ageFromBornDate(bornDate: Date): number {
   const born = dayjs(bornDate);
   if (!born.isValid()) return 0;
 

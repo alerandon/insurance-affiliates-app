@@ -3,7 +3,11 @@ import { RegisterAffiliateDto } from './dto/register-affiliate.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Affiliate } from './schemas/affiliate.schema';
 import { Model } from 'mongoose';
-import { ageFromBornDate, calculateUsdAnnualFee } from './affiliates.helpers';
+import {
+  ageFromBornDate,
+  calculateUsdAnnualFee,
+  findQueryProjection,
+} from './affiliates.helpers';
 import { PAGINATE_DEFAULT_LIMIT } from '../../constants';
 
 @Injectable()
@@ -17,18 +21,24 @@ export class AffiliatesService {
     pageLimit: number = PAGINATE_DEFAULT_LIMIT,
   ) {
     const skipNumber = (pageNumber - 1) * pageLimit;
-    const affiliates = await this.affiliateModel
-      .find({}, { fullName: 1, dni: 1, age: 1, usdAnnualFee: 1 })
+    const countQuery = this.affiliateModel.countDocuments();
+    const fetchQuery = this.affiliateModel
+      .find({}, findQueryProjection)
       .skip(skipNumber)
       .limit(pageLimit)
       .lean({ virtuals: true })
       .exec();
 
+    const [affiliates, totalItems] = await Promise.all([
+      fetchQuery,
+      countQuery,
+    ]);
+
     const response = {
       items: affiliates,
       page: pageNumber,
       limit: pageLimit,
-      total: affiliates.length,
+      total: totalItems,
     };
     return response;
   }

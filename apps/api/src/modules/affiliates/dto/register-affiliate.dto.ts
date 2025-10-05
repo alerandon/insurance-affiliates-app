@@ -1,6 +1,6 @@
-import { IsDate, IsIn, IsPhoneNumber, IsString } from 'class-validator';
-import { GENDER_VALUES, GenderType } from '../types/genders.type';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsDateString, IsIn, IsPhoneNumber, IsString } from 'class-validator';
+import { GENDER_VALUES, GenderType } from '../types/genders.type';
 
 export class RegisterAffiliateDto {
   @ApiProperty({
@@ -22,7 +22,7 @@ export class RegisterAffiliateDto {
   @ApiProperty({
     description:
       'Phone number of the affiliate, it always must start with "+58" country code',
-    example: '+580000000000',
+    example: '+584120000000',
     required: true,
   })
   @IsString()
@@ -47,9 +47,9 @@ export class RegisterAffiliateDto {
 
   @ApiProperty({
     description: 'Born date of the affiliate',
-    example: '1990-01-01',
+    example: '1990-01-23',
     required: true,
   })
-  @IsDate()
+  @IsDateString()
   bornDate: Date;
 }

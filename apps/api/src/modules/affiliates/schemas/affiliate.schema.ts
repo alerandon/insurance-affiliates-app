@@ -1,7 +1,7 @@
 import { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { formattingPhoneNumber } from '../affiliates.helpers';
 import { GENDER_VALUES, GenderType } from '../types/genders.type';
+import * as mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
 export type AffiliateDocument = HydratedDocument<Affiliate>;
 
@@ -15,7 +15,6 @@ export class Affiliate {
 
   @Prop({
     required: true,
-    set: (phone: string) => formattingPhoneNumber(phone) ?? phone,
   })
   phoneNumber: string;
 
@@ -23,12 +22,12 @@ export class Affiliate {
   dni: string;
 
   @Prop({ required: true, enum: GENDER_VALUES })
-  genre: GenderType;
+  gender: GenderType;
 
-  @Prop()
+  @Prop({ min: 0, default: null })
   age: number;
 
-  @Prop()
+  @Prop({ min: 0, default: null })
   usdAnnualFee: number;
 
   @Prop({ required: true })
@@ -36,10 +35,10 @@ export class Affiliate {
 }
 
 export const AffiliateSchema = SchemaFactory.createForClass(Affiliate);
-
 AffiliateSchema.virtual('fullName').get(function () {
   return `${this.firstName} ${this.lastName}`;
 });
 
-AffiliateSchema.set('toJSON', { virtuals: true });
-AffiliateSchema.set('toObject', { virtuals: true });
+const leanVirtualsPlugin: any =
+  (mongooseLeanVirtuals as any)?.default ?? mongooseLeanVirtuals;
+AffiliateSchema.plugin(leanVirtualsPlugin);
