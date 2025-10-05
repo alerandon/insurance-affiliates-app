@@ -31,7 +31,7 @@ export class Affiliate {
   usdAnnualFee: number;
 
   @Prop({ required: true })
-  bornDate: Date;
+  birthDate: Date;
 }
 
 export const AffiliateSchema = SchemaFactory.createForClass(Affiliate);

@@ -10,8 +10,8 @@ export const findQueryProjection = {
   usdAnnualFee: 1,
 };
 
-export function ageFromBornDate(bornDate: Date): number {
-  const born = dayjs(bornDate);
+export function ageFromBirthDate(birthDate: Date): number {
+  const born = dayjs(birthDate);
   if (!born.isValid()) return 0;
 
   const now = dayjs();

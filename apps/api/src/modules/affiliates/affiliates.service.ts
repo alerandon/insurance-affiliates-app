@@ -4,7 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Affiliate } from './schemas/affiliate.schema';
 import { Model } from 'mongoose';
 import {
-  ageFromBornDate,
+  ageFromBirthDate,
   calculateUsdAnnualFee,
   findQueryProjection,
 } from './affiliates.helpers';
@@ -45,7 +45,7 @@ export class AffiliatesService {
 
   async create(registerAffiliateDto: RegisterAffiliateDto) {
     const affiliateInstance = new this.affiliateModel(registerAffiliateDto);
-    const affiliateAge = ageFromBornDate(affiliateInstance.bornDate);
+    const affiliateAge = ageFromBirthDate(affiliateInstance.birthDate);
     const affiliateUsdAnnualFee = calculateUsdAnnualFee(affiliateAge);
 
     affiliateInstance.age = affiliateAge;

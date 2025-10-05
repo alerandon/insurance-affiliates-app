@@ -17,7 +17,7 @@ export const RegisterDocs = {
           gender: 'M',
           age: 32,
           usdAnnualFee: 15,
-          bornDate: '1990-01-01T00:00:00.000Z',
+          birthDate: '1990-01-01T00:00:00.000Z',
           createdAt: '2025-10-02T12:34:45.678Z',
           updatedAt: '2025-10-02T12:34:45.678Z',
           fullName: 'Francisco Lopez',

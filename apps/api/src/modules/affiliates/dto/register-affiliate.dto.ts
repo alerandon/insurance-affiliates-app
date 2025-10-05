@@ -46,10 +46,10 @@ export class RegisterAffiliateDto {
   gender: GenderType;
 
   @ApiProperty({
-    description: 'Born date of the affiliate',
+    description: 'Birth date of the affiliate',
     example: '1990-01-23',
     required: true,
   })
   @IsDateString()
-  bornDate: Date;
+  birthDate: Date;
 }
