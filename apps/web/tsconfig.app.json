@@ -28,6 +28,9 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "insurance-affiliates-types": [
+        "../../packages/types"
       ]
     }
   },
