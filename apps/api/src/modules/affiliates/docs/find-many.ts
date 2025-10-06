@@ -1,4 +1,4 @@
-export const FindAllDocs = {
+export const FindManyDocs = {
   apiOperation: { summary: 'Get all affiliates' },
   apiResponseStatus200: {
     status: 200,

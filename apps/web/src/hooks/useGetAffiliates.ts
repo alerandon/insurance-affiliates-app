@@ -15,12 +15,17 @@ export default function useGetAffiliates(initialPage = 1, initialLimit = 5) {
   const [loading, setLoading] = React.useState<boolean>(false)
   const pageRef = React.useRef<number>(initialPage)
   const limitRef = React.useRef<number>(initialLimit)
+  const filterByDniRef = React.useRef<string | undefined>(undefined)
 
-  const fetchAffiliates = React.useCallback(async (page = initialPage, limit = initialLimit) => {
+  const fetchAffiliates = React.useCallback(async (
+    page = initialPage,
+    limit = initialLimit,
+    filterByDni?: string
+  ) => {
     setLoading(true)
     setError(null)
     try {
-      const res = await getAffiliates(page, limit)
+      const res = await getAffiliates(page, limit, filterByDni)
       setData(res.data as PaginatedAffiliates)
     } catch (err: unknown) {
       console.error(err)
@@ -31,17 +36,26 @@ export default function useGetAffiliates(initialPage = 1, initialLimit = 5) {
   }, [initialPage, initialLimit])
 
   React.useEffect(() => {
-    fetchAffiliates(pageRef.current, limitRef.current)
+    fetchAffiliates(pageRef.current, limitRef.current, filterByDniRef.current)
   }, [fetchAffiliates])
 
-  const refetch = React.useCallback((page?: number, limit?: number) => {
+  const refetch = React.useCallback((page?: number, limit?: number, filterByDni?: string) => {
     if (typeof page === 'number') pageRef.current = page
     if (typeof limit === 'number') limitRef.current = limit
-    fetchAffiliates(pageRef.current, limitRef.current)
+    if (typeof filterByDni === 'string' || filterByDni === undefined) {
+      filterByDniRef.current = filterByDni
+    }
+    fetchAffiliates(pageRef.current, limitRef.current, filterByDniRef.current)
   }, [fetchAffiliates])
 
   const setPage = React.useCallback((p: number) => {
-    refetch(p)
+    refetch(p, undefined, filterByDniRef.current)
+  }, [refetch])
+
+  const setFilter = React.useCallback((filterByDni?: string) => {
+    // Resetear a la página 1 cuando se cambia el filtro
+    pageRef.current = 1
+    refetch(1, undefined, filterByDni)
   }, [refetch])
 
   return {
@@ -50,5 +64,6 @@ export default function useGetAffiliates(initialPage = 1, initialLimit = 5) {
     loading,
     refetch,
     setPage,
+    setFilter,
   }
 }

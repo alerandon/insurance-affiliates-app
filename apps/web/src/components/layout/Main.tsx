@@ -6,7 +6,7 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
 
 function Main() {
-  const { data, loading, error, setPage, refetch } = useGetAffiliates();
+  const { data, loading, error, setPage, setFilter, refetch } = useGetAffiliates();
 
   return (
     <main className="w-full flex flex-col items-center">
@@ -35,6 +35,7 @@ function Main() {
             hasNext={data.hasNext}
             hasPrev={data.hasPrev}
             onPageChange={setPage}
+            onFilterChange={setFilter}
           />
         )}
       </main>

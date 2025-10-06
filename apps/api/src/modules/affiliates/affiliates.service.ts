@@ -10,20 +10,31 @@ import {
 } from './affiliates.helpers';
 import { PAGINATE_DEFAULT_LIMIT } from '../../constants';
 
+interface FindManyParams {
+  pageNumber?: number;
+  pageLimit?: number;
+  filterByDni?: string;
+}
+
 @Injectable()
 export class AffiliatesService {
   constructor(
     @InjectModel(Affiliate.name) private affiliateModel: Model<Affiliate>,
   ) {}
 
-  async findAll(
-    pageNumber: number = 1,
-    pageLimit: number = PAGINATE_DEFAULT_LIMIT,
-  ) {
+  async findMany({
+    pageNumber = 1,
+    pageLimit = PAGINATE_DEFAULT_LIMIT,
+    filterByDni,
+  }: FindManyParams) {
     const skipNumber = (pageNumber - 1) * pageLimit;
-    const countQuery = this.affiliateModel.countDocuments();
+    const searchFilter = filterByDni
+      ? { dni: { $regex: filterByDni, $options: 'i' } }
+      : {};
+
+    const countQuery = this.affiliateModel.countDocuments(searchFilter);
     const fetchQuery = this.affiliateModel
-      .find({}, findQueryProjection)
+      .find(searchFilter, findQueryProjection)
       .skip(skipNumber)
       .limit(pageLimit)
       .lean({ virtuals: true })

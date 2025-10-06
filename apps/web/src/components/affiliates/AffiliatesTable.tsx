@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Table,
   TableBody,
@@ -15,6 +16,9 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { Search, X } from 'lucide-react';
 import type { Affiliate } from 'insurance-affiliates-types';
 
 interface AffiliatesGridProps {
@@ -25,6 +29,7 @@ interface AffiliatesGridProps {
   hasNext: boolean;
   hasPrev: boolean;
   onPageChange: (page: number) => void;
+  onFilterChange?: (filterByDni: string) => void;
 }
 
 function AffiliatesTableDate({
@@ -34,9 +39,34 @@ function AffiliatesTableDate({
   limit,
   hasNext,
   hasPrev,
-  onPageChange
+  onPageChange,
+  onFilterChange
 }: AffiliatesGridProps) {
+  const [searchValue, setSearchValue] = React.useState('');
+
   const totalPages = Math.ceil(totalItems / limit);
+
+  // Manejar búsqueda al hacer clic en el botón
+  const handleSearch = () => {
+    if (onFilterChange) {
+      onFilterChange(searchValue);
+    }
+  };
+
+  // Limpiar filtro
+  const handleClearFilter = () => {
+    setSearchValue('');
+    if (onFilterChange) {
+      onFilterChange('');
+    }
+  };
+
+  // Permitir búsqueda con Enter
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
 
   // Generar array de páginas a mostrar
   const getPageNumbers = () => {
@@ -81,6 +111,44 @@ function AffiliatesTableDate({
 
   return (
     <div className="mt-10 lg:mt-12 max-w-4xl w-full">
+      {/* Campo de búsqueda mejorado */}
+      <div className="mb-8 bg-gray-50 dark:bg-gray-900 p-6 rounded-lg border border-gray-200 dark:border-gray-800">
+        <div className="flex flex-col sm:flex-row gap-3">
+          <div className="flex-1">
+            <Input
+              type="text"
+              placeholder="Ingrese el DNI a buscar..."
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
+              onKeyPress={handleKeyPress}
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleSearch}
+              className="flex-1 sm:flex-none"
+              disabled={!searchValue.trim()}
+            >
+              <Search className="mr-2" size={18} />
+              Buscar
+            </Button>
+            <Button
+              onClick={handleClearFilter}
+              variant="outline"
+              className="flex-1 sm:flex-none"
+            >
+              <X className="mr-2" size={18} />
+              Limpiar Filtro
+            </Button>
+          </div>
+        </div>
+        {searchValue && (
+          <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">
+            Filtrando por DNI: <span className="font-semibold">{searchValue}</span>
+          </p>
+        )}
+      </div>
+
       <Table className="mx-auto">
         <TableHeader>
           <TableRow>
