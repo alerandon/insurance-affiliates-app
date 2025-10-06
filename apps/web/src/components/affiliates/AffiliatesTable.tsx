@@ -130,23 +130,18 @@ function AffiliatesTableDate({
               disabled={!searchValue.trim()}
             >
               <Search className="mr-2" size={18} />
-              Buscar
+              Search
             </Button>
             <Button
               onClick={handleClearFilter}
               variant="outline"
               className="flex-1 sm:flex-none"
             >
-              <X className="mr-2" size={18} />
-              Limpiar Filtro
+            <X className="mr-2" size={18} />
+              Clear Filter
             </Button>
           </div>
         </div>
-        {searchValue && (
-          <p className="text-sm text-gray-600 dark:text-gray-400 mt-3">
-            Filtrando por DNI: <span className="font-semibold">{searchValue}</span>
-          </p>
-        )}
       </div>
 
       <Table className="mx-auto">
