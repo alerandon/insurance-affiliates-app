@@ -47,16 +47,17 @@ Una vez que los contenedores estén en funcionamiento, podrás acceder a los sig
 En este proyecto se ha utilizado Inteligencia Artificial para las siguientes tareas:
 
 - En la generación de este archivo README.
-- En la configuración del `docker-compose` respecto al uso de los tipos compartidos, ubicados en `./packages/types`, incluyendo este modulo como un volume en los servicios de `api` y `web`.
+- En la configuración del `docker-compose` respecto al uso de los tipos compartidos, ubicados en `./packages/types`, incluyendo este modulo como un volume en los servicios de `api` y `web`. Y en consecuencia con respectivas modificaciones a los `Dockerfile` de ambos servicios para el funcionamiento de estas adecuaciones.
 - API:
   - Refinamiento de las reglas del schema de los afiliados, asi como también en el DTO de RegisterAffiliate.
   - Manejo de errores con el endpoint de RegisterAffiliate.
   - Autocompletado para la consulta con paginación de getAffiliates (findMany en el service).
+  - Lógica de filtrado por DNI en la consulta a base de datos (findMany).
   - Pruebas unitarias del controller y el service de los affiliates.
 - Web:
   - Dinamización de los componentes frente al consumo de APIs en la vista.
   - Manejo de los hooks responsables de consumir las APIs.
   - Barra de filtro de la lista de afiliados por su DNI.
-  - Paginación de la lista de afiliados (`AffiliatesTable`).
-  - Regex para validar la longitud y caracteres del campo de `phoneNumber` en el schema de Zod.
+  - Paginación de la lista de afiliados de `AffiliatesTable`.
+  - Regex para validar la longitud y caracteres del campo de `phoneNumber` en el schema de Zod en `RegisterAffiliate`.
   - Pruebas unitarias para los hooks y los componentes de `AffiliatesTable` y `RegisterForm`.
