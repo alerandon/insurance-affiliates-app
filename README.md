@@ -94,4 +94,4 @@ En este proyecto se ha utilizado Inteligencia Artificial para las siguientes tar
 - Input de `phoneNumber` de `RegisterForm` en `web`:
   - Luego de un submit exitoso a la api, al volver a renderizar imprime el mensaje de error del formato telefónico, solo porque se resetea en un string vacio, considerandose como inválido para el regex del schema de Zod.
   - Al momento de imprimirse el mensaje de error desborda el grid del formulario debido al ancho de ese texto.
-- Manejo de un Empty State en el componente de `AffiliatesTable`, tanto a nivel de data como en paginación.
+- Manejo de un Empty State en el componente de `AffiliatesTable`.
