@@ -22,7 +22,7 @@ const formSchema = z.object({
   }),
   phoneNumber: z.string()
     .min(1, { message: "Phone number is required." })
-    .regex(/^\+?[1-9]\d{1,14}$/, {
+    .regex(/^\+?[1-9]\d{11,14}$/, {
       message: "Please enter a valid phone number in international format (e.g., +1234567890).",
     }),
   dni: z.string().min(1, {
@@ -33,7 +33,6 @@ const formSchema = z.object({
     message: "Birth date is required.",
   }),
 });
-
 interface RegisterFormProps {
   tableRefetch: () => void;
 }
