@@ -5,7 +5,7 @@ function Header() {
         MyGuardCare Affiliates
       </h2>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
