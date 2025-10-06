@@ -10,9 +10,9 @@ async function bootstrap() {
   app.enableCors();
 
   const config = new DocumentBuilder()
-    .setTitle('Insurance Affiliates API')
+    .setTitle('MyGuardCare Affiliates API')
     .setDescription(
-      'This is the documentation for the Insurance Affiliates API endpoint routes.',
+      'This is the documentation for the MyGuardCare Affiliates API endpoint routes.',
     )
     .build();
   const document = SwaggerModule.createDocument(app, config);

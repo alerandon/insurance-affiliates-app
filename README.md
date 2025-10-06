@@ -84,4 +84,11 @@ En este proyecto se ha utilizado Inteligencia Artificial para las siguientes tar
   - Barra de filtro de la lista de afiliados por su DNI.
   - Paginación de la lista de afiliados de `AffiliatesTable`.
   - Regex para validar la longitud y caracteres del campo de `phoneNumber` en el schema de Zod en `RegisterAffiliate`.
+  - Manejo de errores y loading.
   - Pruebas unitarias para los hooks y los componentes de `AffiliatesTable` y `RegisterForm`.
+
+## Puntos que quedaron pendientes por refinar
+
+- Input de `phoneNumber` de `RegisterForm` en `web`:
+  - Luego de un submit exitoso a la api, al volver a renderizar imprime el mensaje de error del formato telefónico, solo porque se resetea en un string vacio, considerandose como inválido para el regex del schema de Zod.
+  - Al momento de imprimirse el mensaje de error desborda el grid del formulario debido al ancho de ese texto.

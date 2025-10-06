@@ -165,47 +165,45 @@ function AffiliatesTableDate({
         </TableBody>
       </Table>
 
-      {totalPages > 1 && (
-        <Pagination className="mt-10 lg:mt-12">
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={() => hasPrev && onPageChange(currentPage - 1)}
-                className={!hasPrev ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
+      <Pagination className="mt-10 lg:mt-12">
+        <PaginationContent>
+          <PaginationItem>
+            <PaginationPrevious
+              onClick={() => hasPrev && onPageChange(currentPage - 1)}
+              className={!hasPrev ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            />
+          </PaginationItem>
 
-            {getPageNumbers().map((pageNum, index) => {
-              if (pageNum < 0) {
-                return (
-                  <PaginationItem key={`ellipsis-${index}`}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                );
-              }
-
+          {getPageNumbers().map((pageNum, index) => {
+            if (pageNum < 0) {
               return (
-                <PaginationItem key={pageNum}>
-                  <PaginationLink
-                    onClick={() => onPageChange(pageNum)}
-                    isActive={pageNum === currentPage}
-                    className="cursor-pointer"
-                  >
-                    {pageNum}
-                  </PaginationLink>
+                <PaginationItem key={`ellipsis-${index}`}>
+                  <PaginationEllipsis />
                 </PaginationItem>
               );
-            })}
+            }
 
-            <PaginationItem>
-              <PaginationNext
-                onClick={() => hasNext && onPageChange(currentPage + 1)}
-                className={!hasNext ? "pointer-events-none opacity-50" : "cursor-pointer"}
-              />
-            </PaginationItem>
-          </PaginationContent>
-        </Pagination>
-      )}
+            return (
+              <PaginationItem key={pageNum}>
+                <PaginationLink
+                  onClick={() => onPageChange(pageNum)}
+                  isActive={pageNum === currentPage}
+                  className="cursor-pointer"
+                >
+                  {pageNum}
+                </PaginationLink>
+              </PaginationItem>
+            );
+          })}
+
+          <PaginationItem>
+            <PaginationNext
+              onClick={() => hasNext && onPageChange(currentPage + 1)}
+              className={!hasNext ? "pointer-events-none opacity-50" : "cursor-pointer"}
+            />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
     </div>
   )
 }

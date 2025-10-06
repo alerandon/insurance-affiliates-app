@@ -1,17 +1,17 @@
 "use client"
 
 import { z } from "zod"
+import React from "react"
+import { toast } from "sonner";
 import { format } from "date-fns"
 import { useForm } from "react-hook-form"
+import { GENDER_VALUES } from "myguardcare-affiliates-types"
 import { CalendarIcon, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
-import { zodResolver } from "@hookform/resolvers/zod"
 import * as UI from "@/components/ui"
+import { zodResolver } from "@hookform/resolvers/zod"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import useRegisterAffiliate from "@/hooks/useRegisterAffiliate";
-import { toast } from "sonner";
-import { GENDER_VALUES } from "myguardcare-affiliates-types"
-import React from "react"
 
 const formSchema = z.object({
   firstName: z.string().min(1, {
@@ -21,10 +21,14 @@ const formSchema = z.object({
     message: "Last name is required.",
   }),
   phoneNumber: z.string()
-    .min(1, { message: "Phone number is required." })
-    .regex(/^\+?[1-9]\d{11,14}$/, {
-      message: "Please enter a valid phone number in international format (e.g., +1234567890).",
-    }),
+    .refine(
+      (value) => value === "" || /^\+?[1-9]\d{11,14}$/.test(value),
+      { message: "Please enter a valid phone number in international format (e.g., +1234567890)." }
+    )
+    .refine(
+      (value) => value !== "" && value.length > 3,
+      { message: "Phone number is required." }
+    ),
   dni: z.string().min(1, {
     message: "DNI is required.",
   }),
@@ -33,6 +37,17 @@ const formSchema = z.object({
     message: "Birth date is required.",
   }),
 });
+
+
+const defaultValues = {
+  firstName: "",
+  lastName: "",
+  phoneNumber: "",
+  dni: "",
+  gender: "M" as const,
+  birthDate: undefined as unknown as Date,
+};
+
 interface RegisterFormProps {
   tableRefetch: () => void;
 }
@@ -42,14 +57,7 @@ function RegisterForm({ tableRefetch }: RegisterFormProps) {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      phoneNumber: "",
-      dni: "",
-      gender: "M",
-      birthDate: undefined,
-    },
+    defaultValues,
   });
 
   React.useEffect(() => {
@@ -70,7 +78,8 @@ function RegisterForm({ tableRefetch }: RegisterFormProps) {
     try {
       await register(values);
       toast.success("Affiliate registered successfully!");
-      form.reset();
+      form.clearErrors();
+      form.reset(defaultValues);
       tableRefetch();
     } catch {
       toast.error("Failed to register affiliate.");
