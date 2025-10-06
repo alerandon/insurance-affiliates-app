@@ -1,5 +1,5 @@
 {
-  "name": "insurance-affiliates-types",
+  "name": "@myguardcare-affiliates-types",
   "version": "1.0.0",
   "description": "Types shared between api and web",
   "main": "index.ts",

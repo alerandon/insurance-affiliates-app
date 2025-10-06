@@ -1,14 +1,11 @@
 {
-  "name": "insurance-affiliates-app",
+  "name": "myguardcare-affiliates-app",
   "version": "1.0.0",
   "main": "index.js",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "devDependencies": {
     "@types/node": "^22.10.7",
     "eslint": "^9.18.0",

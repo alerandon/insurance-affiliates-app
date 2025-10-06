@@ -8,7 +8,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "insurance-affiliates-types": ["../../packages/types"]
+      "@myguardcare-affiliates-types": ["../../packages/types"]
     }
   }
 }

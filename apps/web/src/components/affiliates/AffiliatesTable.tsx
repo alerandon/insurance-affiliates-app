@@ -19,7 +19,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Search, X } from 'lucide-react';
-import type { Affiliate } from 'insurance-affiliates-types';
+import type { Affiliate } from '@myguardcare-affiliates-types';
 
 interface AffiliatesGridProps {
   affiliates: Affiliate[];

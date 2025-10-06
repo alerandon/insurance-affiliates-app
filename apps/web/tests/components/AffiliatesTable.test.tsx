@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import AffiliatesTable from '@/components/affiliates/AffiliatesTable'
-import type { Affiliate } from 'insurance-affiliates-types'
+import type { Affiliate } from '@myguardcare-affiliates-types'
 
 describe('AffiliatesTable', () => {
   const mockOnPageChange = vi.fn()
