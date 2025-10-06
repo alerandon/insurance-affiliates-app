@@ -71,7 +71,7 @@ function RegisterForm() {
                 <UI.FormItem>
                   <UI.FormLabel>First Name</UI.FormLabel>
                   <UI.FormControl>
-                    <UI.Input placeholder="shadcn" {...field} />
+                    <UI.Input placeholder="Francisco" {...field} />
                   </UI.FormControl>
                   <UI.FormMessage />
                 </UI.FormItem>
@@ -97,7 +97,11 @@ function RegisterForm() {
                 <UI.FormItem>
                   <UI.FormLabel>Phone Number</UI.FormLabel>
                   <UI.FormControl>
-                    <UI.PhoneInput {...field} />
+                    <UI.PhoneInput
+                      value={field.value}
+                      onChange={field.onChange}
+                      placeholder="Ingresa tu número de teléfono"
+                    />
                   </UI.FormControl>
                   <UI.FormMessage />
                 </UI.FormItem>

@@ -1,60 +1,49 @@
-"use client";
-
-import { Input, type InputProps } from "@/components/ui";
+import * as React from "react";
 import { cn } from "@/lib/utils";
-import React from "react";
-import {
-  CountrySelector,
-  usePhoneInput,
-} from "react-international-phone";
+import { PhoneInput as ReactInternationalPhoneInput, defaultCountries, parseCountry } from "react-international-phone";
 
-export const PhoneInput = React.forwardRef<
-  React.ComponentRef<typeof Input>,
-  Omit<InputProps, "onChange"> & {
-    value: string;
-    onChange: (phone: string) => void;
-  }
->(({ className, value, onChange, ...props }, ref) => {
-  const [isTouched, setIsTouched] = React.useState(false);
-  const { inputValue, handlePhoneValueChange, country, isValid } = usePhoneInput({
-    defaultCountry: "ve",
-    value,
-    onChange: (data) => {
-      onChange(data.phone);
-    },
-  });
+export interface PhoneInputProps {
+  value?: string;
+  onChange?: (phone: string) => void;
+  className?: string;
+  placeholder?: string;
+  disabled?: boolean;
+}
 
-  return (
-    <div className={cn("flex gap-2", className)}>
-      <div className="w-[80px]">
-        <CountrySelector
-          selectedCountry={country}
-          onSelect={() => {}} // No-op
-          renderButtonWrapper={({
-            children,
-            rootProps,
-          }: {
-            children: React.ReactNode;
-            rootProps: React.HTMLAttributes<HTMLDivElement>;
-          }) => (
-            <div
-              {...rootProps}
-              className="flex h-10 w-full items-center justify-center rounded-md border border-input bg-background px-3 py-2 text-sm"
-            >
-              {children}
-            </div>
-          )}
+const countries = defaultCountries.filter((country) => {
+  const { iso2 } = parseCountry(country);
+  return ['ve'].includes(iso2);
+});
+
+const PhoneInput = React.forwardRef<HTMLInputElement, PhoneInputProps>(
+  ({ className, onChange, value = "", placeholder, disabled, ...props }, _ref) => {
+    return (
+      <div className={cn("w-full", className)}>
+        <ReactInternationalPhoneInput
+          defaultCountry="ve"
+          value={value}
+          onChange={onChange}
+          countries={countries}
+          inputProps={{
+            placeholder: placeholder || "Ingresa tu número de teléfono",
+            disabled,
+            className: "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+            ...props
+          }}
+          style={{
+            "--react-international-phone-country-selector-background-color": "hsl(var(--background))",
+            "--react-international-phone-country-selector-background-color-hover": "hsl(var(--accent))",
+            "--react-international-phone-text-color": "hsl(var(--foreground))",
+            "--react-international-phone-border-color": "hsl(var(--border))",
+            "--react-international-phone-border-radius": "0.375rem",
+            "--react-international-phone-height": "2.25rem"
+          } as React.CSSProperties}
         />
       </div>
-      <Input
-        ref={ref}
-        className={cn("w-full", !isValid && isTouched && "border-destructive")}
-        value={inputValue}
-        onChange={handlePhoneValueChange}
-        onBlur={() => setIsTouched(true)}
-        {...props}
-      />
-    </div>
-  );
-});
+    );
+  }
+);
+
 PhoneInput.displayName = "PhoneInput";
+
+export { PhoneInput };
