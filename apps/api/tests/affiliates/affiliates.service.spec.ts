@@ -25,12 +25,21 @@ describe('AffiliatesService', () => {
 
   beforeEach(async () => {
     mockAffiliateModel = jest.fn().mockImplementation((dto) => {
-      return {
+      const instance = {
         ...dto,
         age: undefined,
         usdAnnualFee: undefined,
-        save: jest.fn().mockResolvedValue({ ...dto, _id: 'mockId' }),
+        save: jest.fn().mockImplementation(function () {
+          // Simulate the service setting age and usdAnnualFee before save
+          return Promise.resolve({
+            ...dto,
+            _id: 'mockId',
+            age: this.age,
+            usdAnnualFee: this.usdAnnualFee,
+          });
+        }),
       };
+      return instance;
     });
 
     mockAffiliateModel.find = jest.fn();
@@ -180,68 +189,79 @@ describe('AffiliatesService', () => {
       expect(result).toHaveProperty('_id');
     });
 
-    it('should calculate correct annual fee for age between 0-50', async () => {
-      const registerDto: RegisterAffiliateDto = {
-        firstName: 'Carlos',
-        lastName: 'Rodríguez',
-        phoneNumber: '+584121111111',
+    it.each([
+      {
+        description: 'age between 0-50',
+        birthDate: '2000-01-01',
+        expectedFee: 15,
         dni: '11111111',
-        gender: 'M',
-        birthDate: new Date('2000-01-01'),
-      };
-
-      const result = await service.create(registerDto);
-
-      expect(result).toHaveProperty('usdAnnualFee', 15);
-      expect(result).toHaveProperty('_id');
-    });
-
-    it('should calculate correct annual fee for age between 51-70', async () => {
-      const registerDto: RegisterAffiliateDto = {
-        firstName: 'Pedro',
-        lastName: 'Martínez',
-        phoneNumber: '+584122222222',
+      },
+      {
+        description: 'age between 51-70',
+        birthDate: '1963-01-01',
+        expectedFee: 20,
         dni: '22222222',
-        gender: 'M',
-        birthDate: new Date('1963-01-01'),
-      };
+      },
+      {
+        description: 'age between 71-90',
+        birthDate: '1948-01-01',
+        expectedFee: 25,
+        dni: '33333333',
+      },
+      {
+        description: 'age equal or more than 91',
+        birthDate: '1930-01-01',
+        expectedFee: 30,
+        dni: '44444444',
+      },
+      {
+        description: 'age exactly 50 (boundary)',
+        birthDate: '1975-10-06',
+        expectedFee: 15,
+        dni: '55555555',
+      },
+      {
+        description: 'age exactly 51 (boundary)',
+        birthDate: '1974-10-06',
+        expectedFee: 20,
+        dni: '66666666',
+      },
+      {
+        description: 'age exactly 70 (boundary)',
+        birthDate: '1955-10-06',
+        expectedFee: 20,
+        dni: '77777777',
+      },
+      {
+        description: 'age exactly 71 (boundary)',
+        birthDate: '1954-10-06',
+        expectedFee: 25,
+        dni: '88888888',
+      },
+      {
+        description: 'age exactly 90 (boundary)',
+        birthDate: '1935-10-06',
+        expectedFee: 25,
+        dni: '99999999',
+      },
+    ])(
+      'should calculate correct annual fee for $description',
+      async ({ birthDate, expectedFee, dni }) => {
+        const registerDto: RegisterAffiliateDto = {
+          firstName: 'Test',
+          lastName: 'User',
+          phoneNumber: `+58412${dni}`,
+          dni: dni,
+          gender: 'M',
+          birthDate: new Date(birthDate),
+        };
 
-      const result = await service.create(registerDto);
+        const result = await service.create(registerDto);
 
-      expect(result).toHaveProperty('usdAnnualFee', 20);
-      expect(result).toHaveProperty('_id');
-    });
-
-    it('should calculate correct annual fee for age between 71-90', async () => {
-      const registerDto: RegisterAffiliateDto = {
-        firstName: 'Pedro',
-        lastName: 'Martínez',
-        phoneNumber: '+584122222222',
-        dni: '22222222',
-        gender: 'M',
-        birthDate: new Date('1948-01-01'),
-      };
-
-      const result = await service.create(registerDto);
-
-      expect(result).toHaveProperty('usdAnnualFee', 25);
-      expect(result).toHaveProperty('_id');
-    });
-
-    it('should calculate correct annual fee for age equal or more than 91', async () => {
-      const registerDto: RegisterAffiliateDto = {
-        firstName: 'Pedro',
-        lastName: 'Martínez',
-        phoneNumber: '+584122222222',
-        dni: '22222222',
-        gender: 'M',
-        birthDate: new Date('1963-01-01'),
-      };
-
-      const result = await service.create(registerDto);
-
-      expect(result).toHaveProperty('usdAnnualFee', 30);
-      expect(result).toHaveProperty('_id');
-    });
+        expect(result).toHaveProperty('dni', dni);
+        expect(result).toHaveProperty('usdAnnualFee', expectedFee);
+        expect(result).toHaveProperty('_id');
+      },
+    );
   });
 });
