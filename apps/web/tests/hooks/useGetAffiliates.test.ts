@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 import { renderHook, waitFor } from '@testing-library/react'
 import useGetAffiliates from '@/hooks/useGetAffiliates'
 import * as api from '@/lib/api'
-import type { PaginatedAffiliates } from '@myguardcare-affiliates-types'
+import type { PaginatedAffiliates } from 'myguardcare-affiliates-types'
 
 vi.mock('@/lib/api')
 

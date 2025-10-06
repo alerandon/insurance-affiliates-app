@@ -11,6 +11,16 @@ Asegúrate de tener los siguientes requisitos instalados en tu sistema:
 
 ## Instalación
 
+Antes de instalar las dependencias, es importante que crees un archivo `.env` en la raíz del proyecto y configures las variables de entorno necesarias. Puedes usar el siguiente ejemplo como base:
+
+```
+API_DB_USER=user
+API_DB_PASSWORD=password
+API_DB_HOST=mongodb
+API_DB_PORT=27017
+API_DB_NAME=myguardcare-affiliates-app
+```
+
 Para instalar las dependencias del proyecto, ejecuta el siguiente comando en la raíz del monorepo:
 
 ```bash
@@ -33,6 +43,20 @@ O puedes hacerlo en un solo paso con:
 ```bash
 docker compose up --build --watch
 ```
+
+## Pruebas Unitarias
+
+Mientras los contenedores de Docker se están ejecutando, puedes correr las pruebas unitarias para cada servicio en una terminal separada.
+
+- **API**:
+  ```bash
+  docker compose exec api npm run test
+  ```
+
+- **Web**:
+  ```bash
+  docker compose exec web npm run test
+  ```
 
 ## Endpoints
 

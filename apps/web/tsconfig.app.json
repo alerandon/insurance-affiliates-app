@@ -29,7 +29,7 @@
       "@/*": [
         "./src/*"
       ],
-      "@myguardcare-affiliates-types": [
+      "myguardcare-affiliates-types": [
         "../../packages/types"
       ]
     }

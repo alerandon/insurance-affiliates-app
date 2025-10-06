@@ -10,7 +10,7 @@ import * as UI from "@/components/ui"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import useRegisterAffiliate from "@/hooks/useRegisterAffiliate";
 import { toast } from "sonner";
-import { GENDER_VALUES } from "@myguardcare-affiliates-types"
+import { GENDER_VALUES } from "myguardcare-affiliates-types"
 import React from "react"
 
 const formSchema = z.object({

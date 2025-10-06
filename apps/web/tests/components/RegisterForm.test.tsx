@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import RegisterForm from '@/components/affiliates/RegisterForm'
 import * as useRegisterAffiliateModule from '@/hooks/useRegisterAffiliate'
-import type { Affiliate } from '@myguardcare-affiliates-types'
+import type { Affiliate } from 'myguardcare-affiliates-types'
 
 // Mock del hook useRegisterAffiliate
 vi.mock('@/hooks/useRegisterAffiliate')

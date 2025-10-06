@@ -11,7 +11,7 @@ services:
       - ./packages:/app/packages
       - /app/node_modules
     networks:
-      - insurance_affiliates_network
+      - myguardcare_affiliates_network
     develop:
       watch:
         - action: sync
@@ -41,7 +41,7 @@ services:
     volumes:
       - ./packages:/app/packages
     networks:
-      - insurance_affiliates_network
+      - myguardcare_affiliates_network
     depends_on:
       mongodb:
         condition: service_healthy
@@ -68,7 +68,7 @@ services:
     volumes:
       - mongodb_data:/data/db
     networks:
-      - insurance_affiliates_network
+      - myguardcare_affiliates_network
     healthcheck:
       test: ['CMD', 'mongosh', '--eval', 'db.runCommand({ ping: 1 })']
       interval: 10s
@@ -77,7 +77,7 @@ services:
       start_period: 40s
 
 networks:
-  insurance_affiliates_network:
+  myguardcare_affiliates_network:
     driver: bridge
 
 volumes:

@@ -1,7 +1,7 @@
 import React from 'react'
 import { registerAffiliate } from '@/lib/api'
 import { ApiError, type ApiValidationError } from '@/lib/api/error'
-import type { Affiliate, RegisterAffiliateInput } from '@myguardcare-affiliates-types'
+import type { Affiliate, RegisterAffiliateInput } from 'myguardcare-affiliates-types'
 
 export default function useRegisterAffiliate() {
   const [loading, setLoading] = React.useState(false)

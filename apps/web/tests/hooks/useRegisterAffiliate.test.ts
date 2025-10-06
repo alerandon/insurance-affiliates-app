@@ -3,7 +3,7 @@ import { renderHook, waitFor, act } from '@testing-library/react'
 import useRegisterAffiliate from '@/hooks/useRegisterAffiliate'
 import * as api from '@/lib/api'
 import { ApiError } from '@/lib/api/error'
-import type { Affiliate, RegisterAffiliateInput } from '@myguardcare-affiliates-types'
+import type { Affiliate, RegisterAffiliateInput } from 'myguardcare-affiliates-types'
 
 vi.mock('@/lib/api')
 
