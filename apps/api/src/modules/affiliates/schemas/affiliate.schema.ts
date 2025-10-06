@@ -1,6 +1,6 @@
 import { HydratedDocument } from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { GENDER_VALUES, GenderType } from '../types/genders.type';
+import { GENDER_VALUES, GenderType } from 'insurance-affiliates-types';
 import * as mongooseLeanVirtuals from 'mongoose-lean-virtuals';
 
 export type AffiliateDocument = HydratedDocument<Affiliate>;

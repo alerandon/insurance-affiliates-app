@@ -15,7 +15,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination"
-import type { Affiliate } from '@/types/affiliates.type';
+import type { Affiliate } from 'insurance-affiliates-types';
 
 interface AffiliatesGridProps {
   affiliates: Affiliate[];

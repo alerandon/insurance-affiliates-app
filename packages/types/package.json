@@ -1,0 +1,14 @@
+{
+  "name": "insurance-affiliates-types",
+  "version": "1.0.0",
+  "description": "Types shared between api and web",
+  "main": "index.ts",
+  "types": "index.ts",
+  "scripts": {
+    "build": "tsc"
+  },
+  "author": "",
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}

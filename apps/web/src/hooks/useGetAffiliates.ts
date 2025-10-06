@@ -1,6 +1,6 @@
 import React from 'react'
 import { getAffiliates } from '@/lib/api'
-import type { PaginatedAffiliates } from '@/types/affiliates.type'
+import type { PaginatedAffiliates } from 'insurance-affiliates-types'
 
 export default function useGetAffiliates(initialPage = 1, initialLimit = 5) {
   const [data, setData] = React.useState<PaginatedAffiliates>({

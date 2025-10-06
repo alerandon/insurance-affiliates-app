@@ -1,3 +1,6 @@
+export const GENDER_VALUES = ['M', 'F'] as const;
+export type GenderType = (typeof GENDER_VALUES)[number];
+
 export type Affiliate = {
   _id: string
   firstName: string
@@ -16,8 +19,6 @@ export type PaginatedAffiliates = {
   hasPrev: boolean
   hasNext: boolean
 }
-
-export const GENDER_VALUES = ['M', 'F'] as const
 
 export type RegisterAffiliateInput = {
   firstName: string

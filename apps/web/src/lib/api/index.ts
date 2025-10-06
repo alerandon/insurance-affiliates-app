@@ -1,4 +1,4 @@
-import type { RegisterAffiliateInput } from "@/types/affiliates.type";
+import type { RegisterAffiliateInput } from "insurance-affiliates-types";
 import { handleApiResponse } from "./error";
 
 const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';

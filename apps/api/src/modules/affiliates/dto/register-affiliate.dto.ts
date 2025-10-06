@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsDateString, IsIn, IsPhoneNumber, IsString } from 'class-validator';
-import { GENDER_VALUES, GenderType } from '../types/genders.type';
+import { GENDER_VALUES, GenderType } from 'insurance-affiliates-types';
 
 export class RegisterAffiliateDto {
   @ApiProperty({

@@ -3,13 +3,14 @@
 import { z } from "zod"
 import { format } from "date-fns"
 import { useForm } from "react-hook-form"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as UI from "@/components/ui"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 import useRegisterAffiliate from "@/hooks/useRegisterAffiliate";
 import { toast } from "sonner";
-import { GENDER_VALUES } from "@/types/affiliates.type"
+import { GENDER_VALUES } from "insurance-affiliates-types"
 import React from "react"
 
 const formSchema = z.object({
@@ -38,7 +39,7 @@ interface RegisterFormProps {
 }
 
 function RegisterForm({ tableRefetch }: RegisterFormProps) {
-  const { register, loading, validationErrors } = useRegisterAffiliate();
+  const { register, loading, error, validationErrors } = useRegisterAffiliate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -84,6 +85,12 @@ function RegisterForm({ tableRefetch }: RegisterFormProps) {
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8 mt-8 md:mt-10 lg:mt-12"
         >
+          {error && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <UI.FormField
               control={form.control}
