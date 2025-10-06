@@ -8,8 +8,9 @@ import { cn } from "@/lib/utils"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as UI from "@/components/ui"
 import useRegisterAffiliate from "@/hooks/useRegisterAffiliate";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { GENDER_VALUES } from "@/types/affiliates.type"
+import React from "react"
 
 const formSchema = z.object({
   firstName: z.string().min(1, {
@@ -18,9 +19,11 @@ const formSchema = z.object({
   lastName: z.string().min(1, {
     message: "Last name is required.",
   }),
-  phoneNumber: z.string().min(1, {
-    message: "Phone number is required.",
-  }),
+  phoneNumber: z.string()
+    .min(1, { message: "Phone number is required." })
+    .regex(/^\+?[1-9]\d{1,14}$/, {
+      message: "Please enter a valid phone number in international format (e.g., +1234567890).",
+    }),
   dni: z.string().min(1, {
     message: "DNI is required.",
   }),
@@ -30,8 +33,12 @@ const formSchema = z.object({
   }),
 });
 
-function RegisterForm() {
-  const { register, loading } = useRegisterAffiliate();
+interface RegisterFormProps {
+  tableRefetch: () => void;
+}
+
+function RegisterForm({ tableRefetch }: RegisterFormProps) {
+  const { register, loading, validationErrors } = useRegisterAffiliate();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -45,11 +52,26 @@ function RegisterForm() {
     },
   });
 
+  React.useEffect(() => {
+    if (validationErrors && validationErrors.length > 0) {
+      validationErrors.forEach((validationError) => {
+        const fieldName = validationError.field as keyof z.infer<typeof formSchema>;
+        if (fieldName in form.getValues()) {
+          form.setError(fieldName, {
+            type: "server",
+            message: validationError.message,
+          });
+        }
+      });
+    }
+  }, [validationErrors, form]);
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       await register(values);
       toast.success("Affiliate registered successfully!");
       form.reset();
+      tableRefetch();
     } catch {
       toast.error("Failed to register affiliate.");
     }
@@ -57,13 +79,12 @@ function RegisterForm() {
 
   return (
     <>
-      <Toaster />
       <UI.Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="my-8 space-y-8"
+          className="space-y-8 mt-8 md:mt-10 lg:mt-12"
         >
-          <div className="grid grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <UI.FormField
               control={form.control}
               name="firstName"
@@ -178,8 +199,6 @@ function RegisterForm() {
                           date > new Date() || date < new Date("1900-01-01")
                         }
                         captionLayout="dropdown"
-                        fromYear={1900}
-                        toYear={new Date().getFullYear()}
                       />
                     </UI.PopoverContent>
                   </UI.Popover>
@@ -188,8 +207,8 @@ function RegisterForm() {
               )}
             />
           </div>
-          <div className="flex justify-end">
-            <UI.Button type="submit" disabled={loading}>
+          <div className="flex justify-center lg:justify-end">
+            <UI.Button className="w-full sm:w-1/3 lg:w-auto" type="submit" disabled={loading}>
               {loading ? "Submitting..." : "Submit"}
             </UI.Button>
           </div>

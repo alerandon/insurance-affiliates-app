@@ -1,3 +1,6 @@
+import type { RegisterAffiliateInput } from "@/types/affiliates.type";
+import { handleApiResponse } from "./error";
+
 const baseUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
 
 export async function getAffiliates(
@@ -9,25 +12,16 @@ export async function getAffiliates(
     params.set('limit', limit.toString());
 
     const response = await fetch(`${baseUrl}/api/affiliates?${params.toString()}`);
-    if (!response.ok) {
-      throw new Error('Failed to fetch affiliates');
-    }
-
-    return response.json();
+    return handleApiResponse(response);
 };
 
 export async function registerAffiliate(
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  body: any,
+  body: RegisterAffiliateInput,
 ) {
     const response = await fetch(`${baseUrl}/api/affiliates`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
     });
-    if (!response.ok) {
-        throw new Error('Failed to register affiliate');
-    }
-
-    return response.json();
+    return handleApiResponse(response);
 }

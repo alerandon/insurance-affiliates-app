@@ -2,7 +2,7 @@ import React from 'react'
 import { getAffiliates } from '@/lib/api'
 import type { PaginatedAffiliates } from '@/types/affiliates.type'
 
-export default function useGetAffiliates(initialPage = 1, initialLimit = 20) {
+export default function useGetAffiliates(initialPage = 1, initialLimit = 5) {
   const [data, setData] = React.useState<PaginatedAffiliates>({
     items: [],
     totalItems: 0,
@@ -31,7 +31,6 @@ export default function useGetAffiliates(initialPage = 1, initialLimit = 20) {
   }, [initialPage, initialLimit])
 
   React.useEffect(() => {
-    // initial fetch
     fetchAffiliates(pageRef.current, limitRef.current)
   }, [fetchAffiliates])
 
@@ -45,16 +44,11 @@ export default function useGetAffiliates(initialPage = 1, initialLimit = 20) {
     refetch(p)
   }, [refetch])
 
-  const setLimit = React.useCallback((l: number) => {
-    refetch(undefined, l)
-  }, [refetch])
-
   return {
     data,
     error,
     loading,
     refetch,
     setPage,
-    setLimit,
   }
 }
