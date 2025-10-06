@@ -61,7 +61,7 @@ describe('useRegisterAffiliate', () => {
 
     expect(api.registerAffiliate).toHaveBeenCalledWith({
       ...mockRegisterInput,
-      birthDate: mockRegisterInput.birthDate.toISOString(),
+      birthDate: mockRegisterInput.birthDate instanceof Date ? mockRegisterInput.birthDate.toISOString() : mockRegisterInput.birthDate,
     })
     expect(result.current.loading).toBe(false)
     expect(result.current.error).toBe(null)

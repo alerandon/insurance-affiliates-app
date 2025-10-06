@@ -14,11 +14,13 @@ Asegúrate de tener los siguientes requisitos instalados en tu sistema:
 Antes de instalar las dependencias, es importante que crees un archivo `.env` en la raíz del proyecto y configures las variables de entorno necesarias. Puedes usar el siguiente ejemplo como base:
 
 ```
+API_PORT=3000
 API_DB_USER=user
 API_DB_PASSWORD=password
 API_DB_HOST=mongodb
 API_DB_PORT=27017
 API_DB_NAME=myguardcare-affiliates-app
+API_NODE_ENV=development
 ```
 
 Para instalar las dependencias del proyecto, ejecuta el siguiente comando en la raíz del monorepo:

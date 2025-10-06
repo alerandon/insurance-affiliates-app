@@ -7,6 +7,9 @@ export type Affiliate = {
   lastName: string
   fullName: string
   dni: string
+  phoneNumber: string
+  gender: GenderType
+  birthDate: Date
   age: number
   usdAnnualFee: number
 }
