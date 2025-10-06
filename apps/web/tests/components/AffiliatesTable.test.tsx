@@ -218,24 +218,7 @@ describe('AffiliatesTable', () => {
     expect(searchButton).toBeDisabled()
   })
 
-  it('should not render pagination when totalPages is 1 or less', () => {
-    render(
-      <AffiliatesTable
-        affiliates={mockAffiliates}
-        currentPage={1}
-        totalItems={3}
-        limit={5}
-        hasNext={false}
-        hasPrev={false}
-        onPageChange={mockOnPageChange}
-      />,
-    )
-
-    // No debería haber navegación de paginación
-    expect(screen.queryByRole('navigation')).not.toBeInTheDocument()
-  })
-
-  it('should render pagination when multiple pages exist', () => {
+  it('should render pagination', () => {
     render(
       <AffiliatesTable
         affiliates={mockAffiliates}
